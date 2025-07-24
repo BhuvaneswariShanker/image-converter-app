@@ -1,6 +1,8 @@
 # image-converter-app
 🚀 Event-driven PDF to JPG/ZIP converter with Angular frontend and Go microservices using Kafka, MinIO, and Docker. Converts PDFs, notifies via WebSocket, and auto-deletes files post-download.
 
+![Demo](test-data/80mb-pdf.gif)
+
 # PDF to JPG/ZIP Converter (Local, Event-Driven Microservice)
 
 A lightweight, local-first PDF to JPG converter that generates:
