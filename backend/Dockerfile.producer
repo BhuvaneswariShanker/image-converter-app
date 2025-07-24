@@ -1,0 +1,28 @@
+# ---- Stage 1: Build the Go binary ----
+FROM golang:1.23.0 AS builder
+
+WORKDIR /app
+
+# Copy all files from the current directory (including .env.* files)
+COPY . .
+
+# Build the Go binary
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o image-converter-producer ./cmd/producer
+
+
+# ---- Stage 2: Final minimal image ----
+FROM alpine:latest
+
+# Create the working directory
+WORKDIR /app
+
+# Copy binary from builder
+COPY --from=builder /app/image-converter-producer /app/
+
+# ✅ Copy .env.* files from the host machine (NOT from builder)
+COPY .env.* /app/
+
+# Optional: make binary executable
+RUN chmod +x /app/image-converter-producer
+
+ENTRYPOINT ["/app/image-converter-producer"]
